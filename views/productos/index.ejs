@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Aká Mercado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="title">Lista de Productos</h1>
+        </div>
+    </header>
+
+    <div class="category-filters">
+        <button class="btn-main" onclick="filterProducts('all')">Todos</button>
+        <button class="btn-main" onclick="filterProducts('Botilleria')">Botillería</button>
+        <button class="btn-main" onclick="filterProducts('Cotiseria')">Cotisería</button>
+        <button class="btn-main" onclick="filterProducts('Carniceria')">Carnicería</button>
+        <button class="btn-main" onclick="filterProducts('Aseo')">Aseo</button>
+        <button class="btn-main" onclick="filterProducts('Bebidas')">Bebidas</button>
+        <button class="btn-main" onclick="filterProducts('Abarrotes')">Abarrotes</button>
+        <button class="btn-main" onclick="filterProducts('Tabaqueria')">Tabaquería</button>
+    </div>
+    
+    <a href="/productos/create" class="btn btn-tertiary">Agregar nuevo producto</a>
+
+    <main>
+        <div class="container mt-4">
+            <table class="product-table">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Categoría</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% productos.forEach(producto => { %>
+                        <tr>
+                            <td>
+                                <% if (producto.images) { %>
+                                    <img src="/uploads/<%= producto.image %>" alt="<%= producto.name %>" style="width: 100px; height: auto;">
+                                <% } else { %>
+                                    Sin imagen
+                                <% } %>
+                                </td>
+                                    <td><%= producto.name %></td>
+                                    <td><%= producto.price %> CLP</td>
+                                    <td><%= producto.quantity %></td>
+                                    <td><%= producto.category %></td>
+                                <td>
+                                <a href="/productos/edit/<%= producto._id %>" class="btn btn-primary">Editar</a>
+                                <form action="/productos/delete/<%= producto._id %>" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>                
+            </table>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                if (category === 'all' || product.getAttribute('data-category') === category) {
+                    product.style.display = 'table-row';
+                } else {
+                    product.style.display = 'none'; 
+                }
+            });
+        }
+    </script>
+</body>
+</html>
